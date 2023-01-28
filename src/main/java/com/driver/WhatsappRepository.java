@@ -29,7 +29,7 @@ public class WhatsappRepository {
 
     public String createUser(String name, String mobile) throws Exception {
         if (userMobile.contains(mobile)) {
-            throw new Exception("User Exists");
+            throw new Exception();
         }
         userMobile.add(mobile);
         User user = new User(name, mobile);
@@ -82,6 +82,7 @@ public class WhatsappRepository {
     }
 
     public String changeAdmin(User approver, User user, Group group) throws Exception {
+        if(adminMap.containsKey(group)){
         if (adminMap.get(group).equals(approver)) {
             List<User> participants = groupUserMap.get(group);
             Boolean userFound = false;
@@ -90,13 +91,14 @@ public class WhatsappRepository {
                     userFound = true;
                     break;
                 }
+            }
                 if (userFound) {
                     adminMap.put(group, user);
                     return "SUCCESS";
                 }
                 throw new Exception("User is not a participant");
             }
-            throw new Exception("Approver doesn't have right");
+            throw new Exception("Approver doesn't have rights");
         }
         throw new Exception("Group doesn't exist");
     }
